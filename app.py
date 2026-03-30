@@ -6,9 +6,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud
 
-# ==============================
-# PAGE CONFIG
-# ==============================
 st.set_page_config(page_title="Clothing Review Sentiment", layout="centered")
 st.title("👗 Women's E-Commerce Clothing Review Sentiment Predictor")
 st.write(
@@ -16,27 +13,18 @@ st.write(
     "Adjust the threshold for better balance between positive/negative predictions."
 )
 
-# ==============================
-# LOAD MODEL & VECTORIZER
-# ==============================
 with open("model.pkl", "rb") as f:
     model = pickle.load(f)
 
 with open("vectorizer.pkl", "rb") as f:
     vectorizer = pickle.load(f)
 
-# ==============================
-# USER INPUT - SINGLE REVIEW
-# ==============================
 st.subheader("📥 Enter Review")
 review_text = st.text_area("Type your review here:")
 
 # Sidebar threshold slider
 threshold = st.sidebar.slider("Positive Prediction Threshold", 0.0, 1.0, 0.5)
 
-# ==============================
-# PREDICTION LOGIC
-# ==============================
 if st.button("🔍 Predict Sentiment"):
     if not review_text.strip():
         st.warning("Please enter a review first!")
@@ -60,9 +48,6 @@ if st.button("🔍 Predict Sentiment"):
         if proba is not None:
             st.info(f"Positive Probability: {proba:.2f}")
 
-# ==============================
-# OPTIONAL: WORD CLOUD VISUALIZATION
-# ==============================
 st.subheader("☁️ Review Word Cloud")
 if review_text.strip():
     wc = WordCloud(width=600, height=300, background_color='white').generate(review_text)
@@ -71,9 +56,6 @@ if review_text.strip():
     ax.axis("off")
     st.pyplot(fig)
 
-# ==============================
-# OPTIONAL: BATCH PREDICTION WITH CSV
-# ==============================
 st.subheader("📄 Batch Prediction (CSV Upload)")
 uploaded_file = st.file_uploader("Upload CSV with a 'Review' column", type="csv")
 if uploaded_file:
